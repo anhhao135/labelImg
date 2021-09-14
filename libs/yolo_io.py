@@ -34,11 +34,11 @@ class YOLOWriter:
         y_min = box['ymin']
         y_max = box['ymax']
 
-        x_center = float((x_min + x_max)) / 2 / self.img_size[1]
-        y_center = float((y_min + y_max)) / 2 / self.img_size[0]
+        x_center = float((x_min + x_max)) / 2# / self.img_size[1]
+        y_center = float((y_min + y_max)) / 2# / self.img_size[0]
 
-        w = float((x_max - x_min)) / self.img_size[1]
-        h = float((y_max - y_min)) / self.img_size[0]
+        w = float((x_max - x_min))# / self.img_size[1]
+        h = float((y_max - y_min))# / self.img_size[0]
 
         # PR387
         box_name = box['name']
@@ -124,15 +124,28 @@ class YoloReader:
     def yolo_line_to_shape(self, class_index, x_center, y_center, w, h):
         label = self.classes[int(class_index)]
 
+        
+        x_min = float(x_center) - float(w) / 2
+        x_max = float(x_center) + float(w) / 2
+        y_min = float(y_center) - float(h) / 2
+        y_max = float(y_center) + float(h) / 2
+
+        '''
+
         x_min = max(float(x_center) - float(w) / 2, 0)
         x_max = min(float(x_center) + float(w) / 2, 1)
         y_min = max(float(y_center) - float(h) / 2, 0)
         y_max = min(float(y_center) + float(h) / 2, 1)
 
+        
+
         x_min = round(self.img_size[1] * x_min)
         x_max = round(self.img_size[1] * x_max)
         y_min = round(self.img_size[0] * y_min)
         y_max = round(self.img_size[0] * y_max)
+
+        '''
+
 
         return label, x_min, y_min, x_max, y_max
 
